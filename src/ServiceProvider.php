@@ -5,6 +5,7 @@ namespace MorningMedley\WordPressConfig;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use MorningMedley\WordPressConfig\Classes\DisableCommentsConfig;
 use MorningMedley\WordPressConfig\Classes\PostTypeConfig;
+use MorningMedley\WordPressConfig\Classes\TaxonomyConfig;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -12,6 +13,7 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $this->app->bind('wordpress.post-types', PostTypeConfig::class);
         $this->app->bind('wordpress.disableComments', DisableCommentsConfig::class);
+        $this->app->bind('wordpress.taxonomies', TaxonomyConfig::class);
     }
 
     public function boot(): void
