@@ -18,7 +18,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "MorningMedley\\Config\\": "src/"
+            "MorningMedley\\WordPressConfig\\": "src/"
         }
     },
     "require": {
@@ -29,7 +29,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "MorningMedley\\Config\\ServiceProvider"
+                "MorningMedley\\WordPressConfig\\ServiceProvider"
             ]
         }
     }
