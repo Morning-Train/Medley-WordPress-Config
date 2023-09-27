@@ -1,0 +1,36 @@
+{
+    "name": "morningmedley/wordpress-config",
+    "description": "Blade",
+    "keywords": [
+        "wordpress",
+        "morningtrain",
+        "config",
+        "medley",
+        "morningmedley"
+    ],
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mathias Munk",
+            "email": "mh@morningtrain.dk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MorningMedley\\Config\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "illuminate/container": "^8|^9",
+        "illuminate/support": "^8|^9"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MorningMedley\\Config\\ServiceProvider"
+            ]
+        }
+    }
+}
