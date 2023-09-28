@@ -18,11 +18,21 @@ class ServiceProvider extends IlluminateServiceProvider
 
     public function boot(): void
     {
-        $base = $this->app->config['wordpress'];
-        if (isset($base['config'])) {
-            unset($base['config']);
+        $postTypes = $this->app->config['post-types'];
+        if (! empty($postTypes)) {
+            $this->app->makeWith('wordpress.post-types', ['args' => $postTypes]);
         }
-        foreach (array_merge($base, $this->app->config['wordpress.config']) as $configwordpress => $val) {
+
+        $taxonomies = $this->app->config['taxonomies'];
+        if (! empty($taxonomies)) {
+            $this->app->makeWith('wordpress.taxonomies', ['args' => $taxonomies]);
+        }
+
+        $base = $this->app->config['wordpress'];
+        if (empty($base)) {
+            return;
+        }
+        foreach ($base as $configwordpress => $val) {
             $key = "wordpress." . $configwordpress;
             if ($this->app->bound($key)) {
                 $this->app->makeWith($key, ['args' => $val]);
