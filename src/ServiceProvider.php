@@ -3,17 +3,21 @@
 namespace MorningMedley\WordPressConfig;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use MorningMedley\WordPressConfig\Classes\DisableCommentsConfig;
+use MorningMedley\WordPressConfig\Classes\AcfConfig;
 use MorningMedley\WordPressConfig\Classes\PostTypeConfig;
 use MorningMedley\WordPressConfig\Classes\TaxonomyConfig;
+use MorningMedley\WordPressConfig\Classes\WordPressConfig;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__ . "/config/acf.php", 'acf');
+
         $this->app->bind('wordpress.post-types', PostTypeConfig::class);
-        $this->app->bind('wordpress.disableComments', DisableCommentsConfig::class);
+        $this->app->bind('wordpress.config', WordPressConfig::class);
         $this->app->bind('wordpress.taxonomies', TaxonomyConfig::class);
+        $this->app->bind('wordpress.acf', AcfConfig::class);
     }
 
     public function boot(): void
@@ -28,16 +32,30 @@ class ServiceProvider extends IlluminateServiceProvider
             $this->app->makeWith('wordpress.taxonomies', ['args' => $taxonomies]);
         }
 
-        $base = $this->app->config['wordpress'];
-        if (empty($base)) {
-            return;
-        }
-        foreach ($base as $configwordpress => $val) {
-            $key = "wordpress." . $configwordpress;
-            if ($this->app->bound($key)) {
-                $this->app->makeWith($key, ['args' => $val]);
+        $acfConfig = $this->app->config['acf'];
+        if (! empty($acfConfig)) {
+            if (! empty($acfConfig['paths'])) {
+                $this->app->config->set('acf.paths', $this->absolutePath($acfConfig['paths']));
             }
+            if (! empty($acfConfig['savePath'])) {
+                $this->app->config->set('acf.savePath', $this->absolutePath($acfConfig['savePath']));
+            }
+            $this->app->makeWith('wordpress.acf', ['app' => $this->app, 'args' => $this->app->config['acf']]);
         }
+
+        $wordPressConfig = $this->app->config['wordpress'];
+        if (! empty($taxonomies)) {
+            $this->app->makeWith('wordpress.config', ['args' => $wordPressConfig]);
+        }
+    }
+
+    public function absolutePath(array|string $path): string|array
+    {
+        if (is_array($path)) {
+            return array_map(fn($p) => $this->app->basePath($p), $path);
+        }
+
+        return $this->app->basePath($path);
     }
 
 }
