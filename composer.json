@@ -1,14 +1,11 @@
 {
     "name": "morningmedley/wordpress-config",
-    "description": "Blade",
+    "description": "Use config files to register post types and more.",
     "keywords": [
         "wordpress",
-        "morningtrain",
-        "config",
-        "medley",
-        "morningmedley"
+        "morningmedley",
+        "config"
     ],
-    "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
         {
@@ -27,7 +24,7 @@
         "illuminate/support": "^9|^10"
     },
     "extra": {
-        "laravel": {
+        "morningmedley": {
             "providers": [
                 "MorningMedley\\WordPressConfig\\ServiceProvider"
             ]
