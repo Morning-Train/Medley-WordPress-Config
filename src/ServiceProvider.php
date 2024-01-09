@@ -44,7 +44,7 @@ class ServiceProvider extends IlluminateServiceProvider
         }
 
         $wordPressConfig = $this->app->config['wordpress'];
-        if (! empty($taxonomies)) {
+        if (! empty($wordPressConfig)) {
             $this->app->makeWith('wordpress.config', ['args' => $wordPressConfig]);
         }
     }
