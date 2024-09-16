@@ -8,7 +8,7 @@ use MorningMedley\WordPressConfig\Classes\PostTypeConfig;
 use MorningMedley\WordPressConfig\Classes\TaxonomyConfig;
 use MorningMedley\WordPressConfig\Classes\WordPressConfig;
 
-class ServiceProvider extends IlluminateServiceProvider
+class WordPressConfigServiceProvider extends IlluminateServiceProvider
 {
     public function register(): void
     {
@@ -22,40 +22,24 @@ class ServiceProvider extends IlluminateServiceProvider
 
     public function boot(): void
     {
-        $postTypes = $this->app->config['post-types'];
+        $postTypes = $this->app['config']->get('post-types');
         if (! empty($postTypes)) {
             $this->app->makeWith('wordpress.post-types', ['args' => $postTypes]);
         }
 
-        $taxonomies = $this->app->config['taxonomies'];
+        $taxonomies = $this->app['config']->get('taxonomies');
         if (! empty($taxonomies)) {
             $this->app->makeWith('wordpress.taxonomies', ['args' => $taxonomies]);
         }
 
-        $acfConfig = $this->app->config['acf'];
+        $acfConfig = $this->app['config']->get('acf');
         if (! empty($acfConfig)) {
-            if (! empty($acfConfig['paths'])) {
-                $this->app->config->set('acf.paths', $this->absolutePath($acfConfig['paths']));
-            }
-            if (! empty($acfConfig['savePath'])) {
-                $this->app->config->set('acf.savePath', $this->absolutePath($acfConfig['savePath']));
-            }
-            $this->app->makeWith('wordpress.acf', ['app' => $this->app, 'args' => $this->app->config['acf']]);
+            $this->app->makeWith('wordpress.acf', ['args' => $acfConfig]);
         }
 
-        $wordPressConfig = $this->app->config['wordpress'];
+        $wordPressConfig = $this->app['config']->get('wordpress');
         if (! empty($wordPressConfig)) {
             $this->app->makeWith('wordpress.config', ['args' => $wordPressConfig]);
         }
     }
-
-    public function absolutePath(array|string $path): string|array
-    {
-        if (is_array($path)) {
-            return array_map(fn($p) => $this->app->basePath($p), $path);
-        }
-
-        return $this->app->basePath($path);
-    }
-
 }

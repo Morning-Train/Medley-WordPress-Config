@@ -1,8 +1,8 @@
 <?php return [
     'paths' => [
-        'resources/acf-fields',
+        resource_path('resources/acf-fields'),
     ],
-    'savePath' => 'resources/acf-fields',
+    'savePath' => resource_path('resources/acf-fields'),
     'hideAdminOn' => [
         'production',
     ],

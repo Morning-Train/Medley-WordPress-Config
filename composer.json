@@ -26,7 +26,7 @@
     "extra": {
         "morningmedley": {
             "providers": [
-                "MorningMedley\\WordPressConfig\\ServiceProvider"
+                "MorningMedley\\WordPressConfig\\WordPressConfigServiceProvider"
             ]
         }
     }
