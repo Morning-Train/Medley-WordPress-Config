@@ -9,7 +9,7 @@ class PostTypeConfig
     public function __construct(array $args)
     {
         $this->postTypes = $args;
-        \add_action('init', [$this, 'registerPostTypes']);
+        \add_action('init', [$this, 'registerPostTypes'],8);
     }
 
     public function registerPostTypes()
